@@ -9,11 +9,16 @@ to activate the venv:
 required packages : 
 for camera :
     sudo apt install -y python3-libcamera python3-kms++
+    
     sudo apt install -y python3-prctl libatlas-base-dev ffmpeg python3-pip
     sudo apt install -y python3-pyqt5 python3-opengl # only if you want GUI features
     pip3 install numpy --upgrade
 
     pip3 install picamera2
+    pip install rpi-libcamera
+    pip install kms
+    pip install rpi-kms
+
 
 for robot_hat :
     sudo apt install git python3-pip python3-setuptools python3-smbus
@@ -24,6 +29,7 @@ for robot_hat :
 
 for the webServer :
     pip install Flask
+    pip install requests
 
 for mediapipe:
     pip install mediapipe

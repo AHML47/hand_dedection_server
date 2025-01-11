@@ -1,1 +1,1 @@
-from handDetector import HandDetector
+from .handDetector import HandDetector

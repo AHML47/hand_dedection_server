@@ -1,27 +1,27 @@
-from camera import cam_helper
+from camera import CameraHelper
 from detector import HandDetector
-from streamer import HTTPServer
+from streamer import StreamerHTTP
 import threading
 import requests
 import time
-from queue import Queue
 import cv2
+from queue import Queue
 
-
-streamer=HTTPServer('index.html')
+streamer=StreamerHTTP('index.html')
 detector=HandDetector()
-cam=cam_helper()
+cam=CameraHelper()
 cam.start()
 
 leds = [f"led{i}" for i in range(5)]
-led_Que = []
-NODEMCU_URL = "http://192.168.1.100:80"
+led_Que = Queue()
+NODEMCU_URL = "http://192.168.1.102:80"
 
 def turn_led_control():
     while True:
+        print(list(led_Que.queue))
         for i in range(5):
             # Check if the LED index is in the queue
-            if i in list(led_Que):
+            if i in list(led_Que.queue):
                 # Send a request to turn the LED on
                 try:
                     response = requests.get(f"{NODEMCU_URL}/led?{leds[i]}=on")
@@ -29,6 +29,7 @@ def turn_led_control():
                         print(f"LED {i} turned on: {response.text}")
                     else:
                         print(f"Failed to turn on LED {i}: {response.status_code}")
+                    led_Que.queue.remove(i)
                 except Exception as e:
                     print(f"Error while turning on LED {i}: {e}")
             else:
@@ -50,7 +51,9 @@ def generate_frames():
     while True:
         # Capture frame-by-frame
         frame = cam.capture_arrays()
-        frame = detector.process_image(frame)
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        frame = detector.process_image(frame,led_Que)
+        print(list(led_Que.queue))
 
 
         _, buffer = cv2.imencode('.jpg', frame)

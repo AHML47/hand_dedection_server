@@ -1,1 +1,1 @@
-from HTTPServer import StreamerHTTP
+from .HTTPServer import StreamerHTTP
