@@ -25,3 +25,6 @@ for robot_hat :
 for the webServer :
     pip install Flask
 
+for mediapipe:
+    pip install mediapipe
+
