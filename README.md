@@ -28,3 +28,6 @@ for the webServer :
 for mediapipe:
     pip install mediapipe
 
+for open-cv :
+    pip install opencv-python
+
