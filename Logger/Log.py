@@ -7,9 +7,9 @@ class Log :
 
     def write(self,message):
         date = "["+datetime.now().strftime('%Y-%m-%d %H:%M:%S')+"] : "
-        with open(self.filePath, 'w') as file:
+        with open(self.filePath, 'a') as file:
             file.write(date+message+'\n')
-            file.close()
+
 
 
 

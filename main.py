@@ -31,10 +31,11 @@ def turn_led_control():
                         print(f"LED {i} turned on: {response.text}")
                         requests_log.write(f"LED {i} turned on: {response.text}")
                     else:
-                        print(f"Failed to turn on LED {i}: {response.status_code}")
+                        requests_log.write(f"Failed to turn on LED {i}: {response.status_code}")
+
                     led_Que.queue.remove(i)
                 except Exception as e:
-                    print(f"Error while turning on LED {i}: {e}")
+                    requests_log.write(f"Error while turning on LED {i}: {e}")
             else:
                 # Send a request to turn the LED off
                 try:
@@ -43,9 +44,9 @@ def turn_led_control():
                         print(f"LED {i} turned off: {response.text}")
                         requests_log.write(f"LED {i} turned off: {response.text}")
                     else:
-                        print(f"Failed to turn off LED {i}: {response.status_code}")
+                        requests_log.write(f"Failed to turn off LED {i}: {response.status_code}")
                 except Exception as e:
-                    print(f"Error while turning off LED {i}: {e}")
+                    requests_log.write(f"Error while turning off LED {i}: {e}")
 
         # Add a delay to avoid spamming the server
         time.sleep(0.1)
@@ -57,7 +58,7 @@ def generate_frames():
         frame = cam.capture_arrays()
         frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         frame = detector.process_image(frame,led_Que)
-        print(list(led_Que.queue))
+        
 
 
         _, buffer = cv2.imencode('.jpg', frame)
