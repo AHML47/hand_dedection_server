@@ -1,6 +1,7 @@
 from camera import CameraHelper
 from detector import HandDetector
 from streamer import StreamerHTTP
+from Logger import Log
 import threading
 import requests
 import time
@@ -8,6 +9,7 @@ import cv2
 from queue import Queue
 
 streamer=StreamerHTTP('index.html')
+requests_log=Log('requests_log.txt')
 detector=HandDetector()
 cam=CameraHelper()
 cam.start()
@@ -27,6 +29,7 @@ def turn_led_control():
                     response = requests.get(f"{NODEMCU_URL}/led?{leds[i]}=on")
                     if response.status_code == 200:
                         print(f"LED {i} turned on: {response.text}")
+                        requests_log.write(f"LED {i} turned on: {response.text}")
                     else:
                         print(f"Failed to turn on LED {i}: {response.status_code}")
                     led_Que.queue.remove(i)
@@ -38,6 +41,7 @@ def turn_led_control():
                     response = requests.get(f"{NODEMCU_URL}/led?{leds[i]}=off")
                     if response.status_code == 200:
                         print(f"LED {i} turned off: {response.text}")
+                        requests_log.write(f"LED {i} turned off: {response.text}")
                     else:
                         print(f"Failed to turn off LED {i}: {response.status_code}")
                 except Exception as e:
